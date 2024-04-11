@@ -25,9 +25,10 @@ YesWeWaf is a Web Application Firewall Tester designed to help identify vulnerab
     pip3 install -r requirements.txt
     ```
 
-## Usage
-
-To use YesWeWaf, run the `YesWeWaf.py` script from the command line and specify the necessary options.
+## Exemple
 
 ```bash
-python3 YesWeWaf.py <url> [--test-rce] [--test-sql] [--test-rfi-rce] [--payloads-file <file_path>] [--export-csv]
+python3 yeswewaf.py [--test-xss] '<url>'
+
+
+
