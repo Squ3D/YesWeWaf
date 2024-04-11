@@ -28,7 +28,7 @@ YesWeWaf is a Web Application Firewall Tester designed to help identify vulnerab
 ## Exemple
 
 ```bash
-python3 yeswewaf.py [--test-xss] '<url>'
+python3 yeswewaf.py --test-xss '<url>'
 
 
 
