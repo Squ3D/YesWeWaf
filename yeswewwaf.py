@@ -58,7 +58,7 @@ def test_xss(url, payloads, headers):
         results.append(result)
     return results
 
-def test_directory_traversal(url, payloads, headers):
+def test_rfi(url, payloads, headers):
     results = []
     parsed_url = urlparse(url)
     base_url = urlunparse(parsed_url[:3] + ('', '', ''))  # Remove fragment identifier
@@ -76,10 +76,6 @@ def test_directory_traversal(url, payloads, headers):
             result['vulnerability'] = 'RCE-RFI-LFI'
             result['result'] = 'Bypass Failed'
             print(colored(f"Request for payload {result['payload']} was blocked (403 Forbidden)", 'red'))
-        elif payload in response.text:
-            result['vulnerability'] = 'RCE-RFI-LFI'
-            result['result'] = 'Detected'
-            print(result)
         else:
             result['vulnerability'] = 'RCE-RFI-LFI'
             result['result'] = f'{result["payload"]} - Bypass Succeed'
@@ -107,9 +103,9 @@ def write_results_to_csv(results, filename):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="YesWeWaf: Web Application Firewall Tester")
     parser.add_argument("url", help="URL of the web application to test")
-    parser.add_argument("--test--rce", action="store_true", help="Test for XSS vulnerabilities")
+    parser.add_argument("--test-xss", action="store_true", help="Test for XSS vulnerabilities")
     parser.add_argument("--test-sql", action="store_true", help="Test for SQL Injection vulnerabilities")
-    parser.add_argument("--test-rfi-rce", action="store_true", help="Test for Remote File Inclusion vulnerabilities")
+    parser.add_argument("--test-rfi", action="store_true", help="Test for Remote File Inclusion / RCE  vulnerabilities")
     parser.add_argument("--payloads-file", help="Path to the file containing payloads")
     parser.add_argument("--export-csv", action="store_true", help="Export results to a CSV file")
     args = parser.parse_args()
@@ -151,7 +147,7 @@ if __name__ == "__main__":
     
     if args.test_rfi:
         print("\nTesting for Remote File Inclusion vulnerability: (Not implemented)")
-        # Implement the test for RFI vulnerability here
+        results.extend(test_rfi(args.url, payloads, headers))
 
     if not args.test_xss and not args.test_sql and not args.test_rfi:
         print("No vulnerability type selected. Exiting.")
